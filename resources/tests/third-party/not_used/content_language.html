@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Content-Language test</h1>
+        <script>
+            function preflightExpected(code) {
+                let no_preflight = [42, 44, 45, 46, 61, 59];
+                if (
+                    no_preflight.includes(code) ||
+                    (code >= 48 && code <= 57) ||
+                    (code >= 65 && code <= 90) ||
+                    (code >= 97 && code <= 122)
+                ) {
+                    return false;
+                }
+                return true;
+            }
+
+            async function sendRequests() {
+                for (let i = 33; i < 127; i++) {
+                    let random = Math.random();
+                    if (preflightExpected(i)) {
+                        await fetch(
+                            "https://{{first-party}}/content_language?id=" + i,
+                            {
+                                method: "GET",
+                                headers: {
+                                    "Content-Language": String.fromCharCode(i),
+                                },
+                            }
+                        ).then((response) => {
+                            if (response.status === 200) {
+                                fetch("https://{{first-party}}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body:
+                                        "Content-Language: Preflight request correctly sent for character " +
+                                        String.fromCharCode(i) +
+                                        " -> 1",
+                                });
+                            } else if (response.status === 403) {
+                                fetch("https://{{first-party}}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body:
+                                        "Content-Language: Preflight request not sent for character " +
+                                        String.fromCharCode(i) +
+                                        ", but it should have been sent -> 0",
+                                });
+                            } else {
+                                fetch("https://{{first-party}}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body:
+                                        "Content-Language: a generic error occurred for character " +
+                                        String.fromCharCode(i) +
+                                        " -> 0",
+                                });
+                            }
+                        });
+                    } else {
+                        await fetch(
+                            "https://{{first-party}}/content_language?id=" + i,
+                            {
+                                method: "GET",
+                                headers: {
+                                    "Content-Language": String.fromCharCode(i),
+                                },
+                            }
+                        ).then((response) => {
+                            if (response.status === 200) {
+                                fetch("https://{{first-party}}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body:
+                                        "Content-Language: Preflight request wrongly sent for character " +
+                                        String.fromCharCode(i) +
+                                        " -> 0",
+                                });
+                            } else if (response.status === 403) {
+                                fetch("https://{{first-party}}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body:
+                                        "Content-Language: Preflight request correctly not sent for character " +
+                                        String.fromCharCode(i) +
+                                        " -> 1",
+                                });
+                            } else {
+                                fetch("https://{{first-party}}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body:
+                                        "Content-Language: a generic error occurred for character " +
+                                        String.fromCharCode(i) +
+                                        " -> 0",
+                                });
+                            }
+                        });
+                    }
+
+                    // Wait 0.5 seconds
+                    await new Promise((r) => setTimeout(r, 500));
+                }
+            }
+
+            sendRequests();
+        </script>
+    </body>
+</html>

@@ -1,0 +1,74 @@
+html
+    head
+    body
+        h1 Checking which cookies have been set
+        script.
+            let should_be_sent = "#{should_be_sent}";
+            should_be_sent = should_be_sent.split(";");
+            console.log(should_be_sent);
+
+            let cookies = ["is_strict", "ip_strict", "ws_strict", "wp_strict", "is_lax", "ip_lax", "ws_lax", "wp_lax"];
+            let origin = "#{origin}"
+            let visible_cookies = document.cookie.split(";").map((cookie) => cookie.split("=")[0].trim());
+            console.log(visible_cookies);
+            cookies.forEach((cookie) => {
+                let policy = cookie.split("_")[1];
+                let embedding_name = cookie.split("_")[0][0] === "i" ? "iframe" : "webview";
+                let protocol_message =
+                    cookie.split("_")[0][1] == "s"
+                        ? "same protocol"
+                        : "different protocol";
+                if (visible_cookies.includes(cookie)) {
+                    if (should_be_sent.includes(cookie)) {
+                        fetch("https://#{firstparty}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body: "Set-Cookie, SameSite to " +
+                                    policy +
+                                    ", Remote, Checking if " +
+                                    embedding_name +
+                                    " set the cookie that came to " + origin + " and " +
+                                    protocol_message +
+                                    ": The cookie was set -> 1"
+                        });
+                    } else {
+                        fetch("https://#{firstparty}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body: "Set-Cookie, SameSite to " +
+                                    policy +
+                                    ", Remote, Checking if " +
+                                    embedding_name +
+                                    " set the cookie that came to " + origin + " and " +
+                                    protocol_message +
+                                    ": The cookie was set -> 0"
+                        });
+                    }
+                } else {
+                    if (!should_be_sent.includes(cookie)) {
+                        fetch("https://#{firstparty}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body: "Set-Cookie, SameSite to " +
+                                    policy +
+                                    ", Remote, Checking if " +
+                                    embedding_name +
+                                    " set the cookie that came to " + origin + " and " +
+                                    protocol_message +
+                                    ": The cookie was not set -> 1"
+                        });
+                    } else {
+                        fetch("https://#{firstparty}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body: "Set-Cookie, SameSite to " +
+                                    policy +
+                                    ", Remote, Checking if " +
+                                    embedding_name +
+                                    " set the cookie that came to " + origin + " and " +
+                                    protocol_message +
+                                    ": The cookie was not set -> 0"
+                        });
+                    }
+                }
+            });

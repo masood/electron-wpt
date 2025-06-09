@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <p id="msg">Cookie not received</p>
+
+        <webview src="https://{{first-party}}/get_sec_cookie"></webview>
+
+        <script>
+            let p = document.getElementById("msg");
+            if (document.cookie.includes("secure_cookie")) {
+                p.innerHTML = "Cookie received";
+            }
+        </script>
+    </body>
+</html>

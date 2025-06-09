@@ -1,0 +1,15 @@
+html
+    head 
+    body 
+        script.
+            let embed = '#{embed}';
+            if (embed === "") 
+                embed = "No embedding";
+            let disposition = '#{disposition}';
+
+            let result = disposition == "attachment" ? "0" : "1";
+            fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "Content-Disposition: " + disposition + ", " + embed + " loaded -> " + result,
+                });

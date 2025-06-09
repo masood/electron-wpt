@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>XSS Filter</h1>
+        <script>
+            var productionMode = true;
+        </script>
+        <script>
+            if (!window.productionMode) {
+                console.log("This is a development version");
+            } else {
+                console.log("This is a production version");
+            }
+        </script>
+    </body>
+</html>

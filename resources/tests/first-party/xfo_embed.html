@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>iframe deny</h1>
+        <iframe
+            src="http://{{first-party}}/xfo?policy=DENY&origin=SAME&embed=IFRAME"
+        ></iframe>
+        <h1>Webview deny</h1>
+        <webview
+            src="http://{{first-party}}/xfo?policy=DENY&origin=SAME&embed=WEBVIEW"
+        ></webview>
+        <h1>iframe sameorigin</h1>
+        <iframe
+            src="https://{{first-party}}/xfo?policy=SAMEORIGIN&origin=SAME&embed=IFRAME"
+        ></iframe>
+        <h1>Webview sameorigin</h1>
+        <webview
+            src="http://{{first-party}}/xfo?policy=SAMEORIGIN&origin=SAME&embed=WEBVIEW"
+        ></webview>
+    </body>
+</html>

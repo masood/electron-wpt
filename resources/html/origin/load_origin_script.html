@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script
+            src="https://unscripted-pale-violet.online/origin_script"
+            defer
+        ></script>
+        <title>Document</title>
+    </head>
+    <body>
+        <!-- Same domain -->
+        <p>Same domain iframe</p>
+        <iframe
+            class="ifr"
+            src="https://unscripted-pale-violet.online/origin_check.html"
+            style="display: inline-flex; width: 640px; height: 480px"
+        ></iframe>
+        <!-- Subdomain -->
+        <p>Subdomain iframe</p>
+        <iframe
+            class="ifr"
+            src="https://1.unscripted-pale-violet.online/origin_check.html"
+            style="display: inline-flex; width: 640px; height: 480px"
+        ></iframe>
+        <!-- Different domain -->
+        <p>Different domain iframe</p>
+        <iframe
+            class="ifr"
+            src="https://{{first-party}}/origin_check.html"
+            style="display: inline-flex; width: 640px; height: 480px"
+        ></iframe>
+        <!-- Different scheme -->
+        <p>Different scheme iframe</p>
+        <iframe
+            class="ifr"
+            src="http://unscripted-pale-violet.online:8080/origin_check.html"
+            style="display: inline-flex; width: 640px; height: 480px"
+        ></iframe>
+        <!-- Local file -->
+        <p>Local file iframe</p>
+        <iframe
+            class="ifr"
+            src="file:///Users/claudio/Thesis/Origin/origin.html"
+            style="display: inline-flex; width: 640px; height: 480px"
+        ></iframe>
+
+        <!-- Same domain -->
+        <p>Same domain webview</p>
+        <webview
+            class="webview"
+            src="https://unscripted-pale-violet.online/origin_check.html"
+            style="display: inline-flex; width: 640px; height: 480px"
+        ></webview>
+        <!-- Subdomain -->
+        <p>Subdomain webview</p>
+        <webview
+            class="webview"
+            src="https://1.unscripted-pale-violet.online/origin_check.html"
+            style="display: inline-flex; width: 640px; height: 480px"
+        ></webview>
+        <!-- Different domain -->
+        <p>Different domain webview</p>
+        <webview
+            class="webview"
+            src="https://{{first-party}}/origin_check.html"
+            style="display: inline-flex; width: 640px; height: 480px"
+        ></webview>
+        <!-- Different scheme -->
+        <p>Different scheme webview</p>
+        <webview
+            class="webview"
+            src="http://unscripted-pale-violet.online:8080/origin_check.html"
+            style="display: inline-flex; width: 640px; height: 480px"
+        ></webview>
+        <!-- Local file -->
+        <p>Local file webview</p>
+        <webview
+            class="webview"
+            src="file:///Users/test/Thesis/Origin/origin.html"
+            style="display: inline-flex; width: 640px; height: 480px"
+        ></webview>
+    </body>
+</html>

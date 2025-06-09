@@ -1,0 +1,109 @@
+html
+    head
+    body
+        script.
+            let embed = "#{embed}";
+            function preflightExpected(code) {
+                let no_preflight = [42, 44, 45, 46, 61, 59];
+                if (
+                    no_preflight.includes(code) ||
+                    (code >= 48 && code <= 57) ||
+                    (code >= 65 && code <= 90) ||
+                    (code >= 97 && code <= 122)
+                ) {
+                    return false;
+                }
+                return true;
+            }
+
+            async function sendRequests() {
+                for (let i = 33; i < 127; i++) {
+                    let random = Math.random();
+                    if (preflightExpected(i)) {
+                        await fetch(
+                            "https://#{firstparty}/content_language?id=" +
+                                i,
+                            {
+                                method: "GET",
+                                headers: {
+                                    "Content-Language": String.fromCharCode(i),
+                                },
+                            }
+                        ).then((response) => {
+                            if (response.status === 200) {
+                                fetch("https://#{firstparty}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body:
+                                        "Content-Language Remote " + embed + ": Preflight request correctly sent for character " +
+                                        String.fromCharCode(i) +
+                                        " -> 1",
+                                });
+                            } else if (response.status === 403) {
+                                fetch("https://#{firstparty}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body:
+                                        "Content-Language Remote " + embed + ": Preflight request not sent for character " +
+                                        String.fromCharCode(i) +
+                                        ", but it should have been sent -> 0",
+                                });
+                            } else {
+                                fetch("https://#{firstparty}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body:
+                                        "Content-Language Remote " + embed + ": a generic error occurred for character " +
+                                        String.fromCharCode(i) +
+                                        " -> 0",
+                                });
+                            }
+                        });
+                    } else {
+                        await fetch(
+                            "https://#{firstparty}/content_language?id=" +
+                                i,
+                            {
+                                method: "GET",
+                                headers: {
+                                    "Content-Language": String.fromCharCode(i),
+                                },
+                            }
+                        ).then((response) => {
+                            if (response.status === 200) {
+                                fetch("https://#{firstparty}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body:
+                                        "Content-Language Remote " + embed + ": Preflight request wrongly sent for character " +
+                                        String.fromCharCode(i) +
+                                        " -> 0",
+                                });
+                            } else if (response.status === 403) {
+                                fetch("https://#{firstparty}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body:
+                                        "Content-Language Remote " + embed + ": Preflight request correctly not sent for character " +
+                                        String.fromCharCode(i) +
+                                        " -> 1",
+                                });
+                            } else {
+                                fetch("https://#{firstparty}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body:
+                                        "Content-Language Remote " + embed + ": a generic error occurred for character " +
+                                        String.fromCharCode(i) +
+                                        " -> 0",
+                                });
+                            }
+                        });
+                    }
+
+                    // Wait 0.5 seconds
+                    await new Promise((r) => setTimeout(r, 500));
+                }
+            }
+
+            sendRequests();

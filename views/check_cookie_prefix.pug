@@ -1,0 +1,29 @@
+html
+    head
+    body
+        script.
+            let embed = '#{embed}';
+            if (embed === "") 
+                embed = "No embedding";
+            let cookie_name = '#{cookie_name}';
+            let is_flag_set = '#{is_flag_set}';
+            let is_https = '#{is_https}';
+            let cookies = document.cookie.split(";");
+            cookies = cookies.map(cookie => cookie.split("=")[0].trim());
+            let flag_message = is_flag_set === "true" ? "the secure flag set" : "the secure flag not set";
+            let htpps_message = is_https === "true" ? "HTPPS" : "HTTP";
+            if (cookies.includes("__Secure-" + cookie_name)) {
+                let result = (is_flag_set === "true" && is_https === "true") ? "1" : "0";
+                fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "Set-Cookie, Remote, " + embed + ", Check cookie prefix __Secure- using " + htpps_message + " with " + flag_message + ". Cookie found -> " + result,
+                })
+            } else {
+                let result = (is_flag_set === "true" && is_https === "true") ? "0" : "1";
+                fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "Set-Cookie, Remote, " + embed + ", Check cookie prefix __Secure- using " + htpps_message + " with " + flag_message + ". Cookie not found -> " + result,
+                })
+            }

@@ -1,0 +1,80 @@
+html 
+    head 
+    body 
+        script.
+            let embed = "#{embed}";
+            let id = Math.random();
+            fetch("https://#{firstparty}/request_headers?allow=false&id=" + id, {
+                method: "GET",
+                headers: {
+                    "Custom-Header": "value1",
+                },
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        fetch("https://#{firstparty}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body: `Request headers, ${embed}, Remote, false, page loaded -> 0`,
+                        });
+                    } else if (response.status === 403) {
+                        fetch("https://#{firstparty}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body: `Request headers, ${embed}, Remote, false, Page loaded and No preflight -> 0`,
+                        });
+                    } else {
+                        fetch("https://#{firstparty}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body: `Request headers, ${embed}, Remote, false, Unknown error -> 0`,
+                        });
+                    }
+                })
+                .catch((error) => {
+                    fetch("https://#{firstparty}/report", {
+                        method: "POST",
+                        headers: { "Content-Type": "text/plain" },
+                        body: `Request headers, ${embed}, Remote, false, page not loaded -> 1`,
+                    });
+                })
+                .finally(() => {
+                    let id = Math.random();
+                    fetch(
+                        "https://#{firstparty}/request_headers?allow=true&id=" + id,
+                        {
+                            method: "GET",
+                            headers: {
+                                "Custom-Header": "value1",
+                            },
+                        }
+                    )
+                        .then((response) => {
+                            if (response.ok) {
+                                fetch("https://#{firstparty}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body: `Request headers, ${embed}, Remote, true, page loaded -> 1`,
+                                });
+                            } else if (response.status === 403) {
+                                fetch("https://#{firstparty}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body: `Request headers, ${embed}, Remote, true, Page loaded and No preflight -> 0`,
+                                });
+                            } else {
+                                fetch("https://#{firstparty}/report", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "text/plain" },
+                                    body: `Request headers, ${embed}, Remote, true, Unknown error -> 0`,
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            fetch("https://#{firstparty}/report", {
+                                method: "POST",
+                                headers: { "Content-Type": "text/plain" },
+                                body: `Request headers, ${embed}, Remote, true, page not loaded -> 0`,
+                            });
+                        });
+                });

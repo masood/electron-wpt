@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <button id="button1">Fetch resource</button>
+        <button id="button2">Open window</button>
+        <script>
+            let button1 = document.getElementById("button1");
+            button1.onclick = () =>
+                fetch("http://unscripted-pale-violet.online/hsts_resource");
+            let button2 = document.getElementById("button2");
+            button2.onclick = () =>
+                window.open(
+                    "http://unscripted-pale-violet.online/",
+                    "_blank",
+                    "noopener"
+                );
+        </script>
+    </body>
+</html>

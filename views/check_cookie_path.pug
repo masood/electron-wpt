@@ -1,0 +1,27 @@
+html
+    head
+    body
+        script.
+            let embed = '#{embed}';
+            if (embed === "") 
+                embed = "No embedding";
+            let expected_result = '#{expected_result}' === 'true' ? true : false;
+            let visited = '#{visited}';
+            let cookie_name = '#{name}';
+            let cookies = document.cookie.split(';').map(cookie => cookie.split('=')[0].trim());
+            
+            if (cookies.includes(cookie_name)) {
+                let res_code = expected_result === true ? "1" : "0";
+                fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "Set-Cookie, " + embed + ", Check Path attribute of cookie: Path set to an intermediate folder. The cookie was visible from a " + visited + " -> " + res_code,
+                });
+            } else {
+                let res_code = expected_result === false ? "1" : "0";
+                fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "Set-Cookie, " + embed + ", Check Path attribute of cookie: Path set to an intermediate folder. The cookie was not visible from a " + visited + " -> " + res_code,
+                });
+            }

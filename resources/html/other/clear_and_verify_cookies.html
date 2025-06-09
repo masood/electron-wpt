@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <p>Cookies:</p>
+        <p id="cookies"></p>
+        <br />
+        <p>Local storage</p>
+        <p id="local_storage"></p>
+        <br />
+        <p>Session storage</p>
+        <p id="session_storage"></p>
+
+        <script>
+            let p = document.getElementById("cookies");
+            let storage = document.getElementById("local_storage");
+            let session = document.getElementById("session_storage");
+            p.innerHTML = document.cookie;
+            storage.innerHTML = localStorage.getItem("local");
+            storage.innerHTML = localStorage.getItem("session");
+        </script>
+    </body>
+</html>

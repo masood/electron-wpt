@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <p id="demo">Setting the value</p>
+        <script>
+            let p = document.getElementById("demo");
+            try {
+                if ("indexedDB" in window) {
+                    const indexDBrequest = window.indexedDB.open("SiteA-DB");
+                    indexDBrequest.onerror = (event) => {
+                        console.error(
+                            "Why didn't you allow my web app to use IndexedDB?!",
+                            event
+                        );
+                    };
+                    indexDBrequest.onupgradeneeded = (event) => {
+                        const db = event.target.result;
+                        const store = db.createObjectStore("SiteA-DB-Store", {
+                            keyPath: "site",
+                        });
+                        var index = store.createIndex("SiteIndex", ["site"]);
+                    };
+                    indexDBrequest.onsuccess = (event) => {
+                        const db = event.target.result;
+                        var tx = db.transaction("SiteA-DB-Store", "readwrite");
+                        var store = tx.objectStore("SiteA-DB-Store");
+                        store.put({ site: "siteA", value: "value" });
+                        tx.oncomplete = function () {
+                            db.close();
+                        };
+                        p.innerHTML = "Value set";
+                    };
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        </script>
+    </body>
+</html>

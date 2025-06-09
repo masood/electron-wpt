@@ -1,0 +1,37 @@
+html 
+    head 
+    body 
+        a(href="/send_cookie") Send cookie
+        script.
+            let embed = '#{embed}';
+            if (embed === "") 
+                embed = "No embedding";
+            let cookies = document.cookie.split(";")
+            let cookie_names = []
+            let not_allowed = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,40,41,60,62,64,59,44,58,92,47,34,91,93,61,63,123,125,127]
+            for (let i=0; i<cookies.length; i++) {
+                let cookie_name = cookies[i].split("=")[0].trim()
+                cookie_names.push(cookie_name)
+            }
+            console.log(cookie_names)
+            for (let code = 0; code < 128; code++) {
+                if (cookie_names.includes(String.fromCharCode(code))) {
+                    let result = not_allowed.includes(code) ? "0" : "1"
+                    fetch("https://#{firstparty}/report", {
+                        method: "POST",
+                        headers: { "Content-Type": "text/plain" },
+                        body: "Set-Cookie, Remote, " + embed + ", Check cookie name test: Cookie name contains character " +
+                            String.fromCharCode(code) +
+                            " with code " + code + " -> " + result,
+                    })
+                } else {
+                    let result = not_allowed.includes(code) ? "1" : "0"
+                    fetch("https://#{firstparty}/report", {
+                        method: "POST",
+                        headers: { "Content-Type": "text/plain" },
+                        body: "Set-Cookie, Remote, " + embed + ", Check cookie name test: Cookie name does not contain character " +
+                            String.fromCharCode(code) +
+                            " with code " + code + " -> " + result,
+                    })
+                }
+            }

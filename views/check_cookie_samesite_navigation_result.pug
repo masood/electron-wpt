@@ -1,0 +1,32 @@
+html
+    head
+    body
+        script.
+            let embed = '#{embed}';
+            if (embed === "") 
+                embed = "No embedding";
+            let cookie_name = '#{name}';
+            let policy = '#{policy}';
+            let new_protocol = location.protocol;
+            let old_protocol = '#{old_protocol}';
+            let expected_result = '#{expected_result}' === 'true' ? true : false;
+            let isCookiePresent = '#{isCookiePresent}' === 'true' ? true : false;
+            let is_cross = '#{is_cross}' === 'true' ? true : false;
+
+            let cross_message = is_cross ? "cross-origin" : "same-origin";
+
+            if (isCookiePresent) {
+                let res_code = expected_result === true ? "1" : "0";
+                fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "Set-Cookie, Remote, " + embed + ", Check if SameSite cookie is sent: SameSite set to " + policy + ", final endpoint visited with a " + cross_message + " navigation from " + old_protocol + " to " + new_protocol + " and the cookie was sent -> " + res_code,
+                });
+            } else {
+                let res_code = expected_result === false ? "1" : "0";
+                fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "Set-Cookie, Remote, " + embed + ", Check if SameSite cookie is sent: SameSite set to " + policy + ", final endpoint visited with a " + cross_message + " navigation from " + old_protocol + " to " + new_protocol + " and the cookie was not sent -> " + res_code,
+                });
+            }

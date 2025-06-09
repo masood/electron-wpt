@@ -1,0 +1,21 @@
+html
+    head
+        script(type="module" src="send_report.js") 
+    body 
+        script(type="module"). 
+            let embed = "#{embed}";
+            import { send_report } from "./send_report.js";
+
+            fetch("https://#{firstparty}/check_set_cookie_visibility", {
+                method: "GET",
+            }).then((response) => {
+                if (response.headers.get("Set-Cookie")) {
+                    send_report(
+                        "Set-Cookie visibility test, Remote " + embed + ": Set-Cookie header is visible -> 0"
+                    );
+                } else {
+                    send_report(
+                        "Set-Cookie visibility test, Remote " + embed + ": Set-Cookie header is not visible -> 1"
+                    );
+                }
+            });

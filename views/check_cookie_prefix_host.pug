@@ -1,0 +1,28 @@
+html    
+    head
+    body
+        script.
+            let cookie_name = '__Host-' + '#{name}';
+            let protocol = '#{protocol}';
+            let secure = '#{secure}' === 'true' ? "set" : "not set";
+            let domain = '#{domain}' === "" ? "not specified" : "specified";
+            let path = '#{path}' === "/" ? "not specified" : "specified";
+            let expected_result = '#{expected_result}' === 'true' ? true : false;
+
+            let cookies = document.cookie.split(';').map(cookie => cookie.split('=')[0].trim());
+
+            if (cookies.includes(cookie_name)) {
+                let res_code = expected_result === true ? "1" : "0";
+                fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "Set-Cookie, Remote, Check cookie prefix __Host- using " + protocol + ", Secure flag " + secure + ", Domain attribute " + domain + " and Path attribute " + path + ". Cookie found -> " + res_code,
+                });
+            } else {
+                let res_code = expected_result === false ? "1" : "0";
+                fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "Set-Cookie, Remote, Check cookie prefix __Host- using " + protocol + ", Secure flag " + secure + ", Domain attribute " + domain + " and Path attribute " + path + ". Cookie not found -> " + res_code,
+                });
+            }

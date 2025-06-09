@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Camera permission</h1>
+        <p id="message"></p>
+        <div class="camera">
+            <video id="video">Video stream not available.</video>
+        </div>
+        <script>
+            let p = document.getElementById("message");
+            let video = document.getElementById("video");
+            navigator.mediaDevices
+                .getUserMedia({ video: true })
+                .then((stream) => {
+                    p.innerText = "Permission acquired";
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch((error) => {
+                    console.log(error);
+                    p.innerText = "Permission denied";
+                });
+        </script>
+    </body>
+</html>

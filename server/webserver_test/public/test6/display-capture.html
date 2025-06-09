@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Display capture permission</h1>
+        <p id="message"></p>
+        <div class="camera">
+            <video id="video">Video stream not available.</video>
+        </div>
+
+        <script>
+            let p = document.getElementById("message");
+            let video = document.getElementById("video");
+            navigator.mediaDevices
+                .getUserMedia({
+                    audio: false,
+                    video: {
+                        mandatory: {
+                            chromeMediaSource: "desktop",
+                        },
+                    },
+                })
+                .then((stream) => {
+                    p.textContent = "Permission granted";
+                    video.srcObject = stream;
+                    video.play();
+                })
+                .catch((err) => {
+                    p.textContent = "Permission denied";
+                });
+        </script>
+    </body>
+</html>

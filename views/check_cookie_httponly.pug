@@ -1,0 +1,27 @@
+html
+    head
+    body
+        script.
+            let embed = '#{embed}';
+            if (embed === "") 
+                embed = "No embedding";
+            let is_flagged = '#{flag}';
+            let expected_result = is_flagged === "true" ? false : true; //- False if cookie not found, True if found.
+            let cookie_name = '#{name}';
+            let cookies = document.cookie.split(";");
+            cookies = cookies.map((cookie) => cookie.split("=")[0].trim()); //- Get the name of the cookies
+            if (cookies.includes(cookie_name)) {
+                let res_code = expected_result === true ? "1" : "0";
+                fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "Set-Cookie, Remote, " + embed + ", Check visibility of cookie to JS code running inside the embedding: HttpOnly set to " + is_flagged + " and the cookie is Visible -> " + res_code,
+                });
+            } else {
+                let res_code = expected_result === false ? "1" : "0";
+                fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "Set-Cookie, Remote, " + embed + ", Check visibility of cookie to JS code running inside the embeddinginside: HttpOnly set to " + is_flagged + " and the cookie is Not Visible -> " + res_code,
+                });
+            }

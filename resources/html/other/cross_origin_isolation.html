@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>COOP test</h1>
+        <p id="message"></p>
+
+        <script>
+            let p = document.getElementById("message");
+
+            if (crossOriginIsolated) {
+                p.textContent = "Cross Origin isolated";
+            } else {
+                p.textContent = "Not Cross Origin isolated";
+            }
+
+            console.log("Testing features...");
+            try {
+                const buffer = new SharedArrayBuffer(16);
+                console.log("SharedArrayBuffer created: " + buffer);
+            } catch (e) {
+                console.log("Error: " + e);
+            }
+
+            try {
+                let t1 = performance.now();
+                let t2 = performance.now();
+                console.log("Performance.now() works: " + (t2 - t1));
+            } catch (e) {
+                console.log("Error: " + e);
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <p id="demo">Reading the value</p>
+        <a href="https://unscripted-pale-violet.online/contain_set_indexeddb"
+            >Go back</a
+        >
+        <script>
+            const setTestResult = (storageType, value) => {
+                let p = document.getElementById("demo");
+                if (value === null) {
+                    p.innerHTML = "Value not set";
+                } else {
+                    p.innerHTML = "Value: " + value;
+                }
+            };
+            try {
+                if (window.localStorage) {
+                    let value = localStorage.getItem("siteA");
+                    setTestResult("localstorage", value);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+            try {
+                if (window.sessionStorage) {
+                    let value = sessionStorage.getItem("siteA");
+                    setTestResult("sessionstorage", value);
+                }
+            } catch (err) {
+                console.error(err);
+            }
+            try {
+                if (window.indexedDB) {
+                    const indexDBrequest = window.indexedDB.open("SiteA-DB");
+                    indexDBrequest.onerror = (event) => {
+                        console.error(
+                            "Why didn't you allow my web app to use IndexedDB?!"
+                        );
+                    };
+                    indexDBrequest.onsuccess = (event) => {
+                        const db = event.target.result;
+                        var store;
+                        var tx;
+                        try {
+                            tx = db.transaction("SiteA-DB-Store", "readonly");
+                            store = tx.objectStore("SiteA-DB-Store");
+                        } catch (err) {
+                            setTestResult("indexeddb", null);
+                        }
+                        if (store && tx) {
+                            var readIndexDb = store.get("siteA");
+                            readIndexDb.onsuccess = (event) => {
+                                if (event.target && event.target.result) {
+                                    setTestResult(
+                                        "indexeddb",
+                                        event.target.result.value
+                                    );
+                                }
+                            };
+                            tx.oncomplete = function () {
+                                db.close();
+                            };
+                        }
+                    };
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        </script>
+    </body>
+</html>

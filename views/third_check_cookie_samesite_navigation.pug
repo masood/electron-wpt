@@ -1,0 +1,13 @@
+html
+    head
+    body
+        script.
+            let embed = '#{embed}';
+            let policy = '#{policy}';
+            let cookie_name = '#{name}';
+            let old_protocol = '#{old_protocol}'
+            let new_protocol = '#{new_protocol}';
+            let expected_result = '#{expected_result}';
+            window.addEventListener('load', function() {
+                window.location.href = new_protocol + "://#{firstparty}/check_cookie_samesite_navigation_result?name=" + cookie_name + "&policy=" + policy + "&embed=" + embed + "&old_protocol=" + old_protocol + "&expected_result=" + expected_result + "&cross=true";
+            });

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <iframe
+            id="iframe1"
+            src="https://{{first-party}}/check_cookie_httponly?embed=iframe&flag=true&name=aaa"
+        ></iframe>
+        <iframe
+            id="iframe2"
+            src="https://{{first-party}}/check_cookie_httponly?embed=iframe&flag=false&name=bbb"
+        ></iframe>
+        <webview
+            id="webview1"
+            src="https://{{first-party}}/check_cookie_httponly?embed=webview&flag=true&name=ccc"
+        ></webview>
+        <webview
+            src="https://{{first-party}}/check_cookie_httponly?embed=webview&flag=false&name=ddd"
+        ></webview>
+
+        <script>
+            // Check if cookies are visible from script outside the iframes
+            // TODO Refactor
+            let iframes = document.querySelectorAll("iframe");
+            let webviews = document.querySelectorAll("webview");
+            iframes.forEach((iframe) => {
+                iframe.addEventListener("load", () => {
+                    if (iframe.id === "iframe1") {
+                        var cookie_name = "aaa";
+                        var expected_result = false;
+                        var is_flagged = "true";
+                    } else {
+                        var cookie_name = "bbb";
+                        var expected_result = true;
+                        var is_flagged = "false";
+                    }
+
+                    let cookies = document.cookie.split(";");
+                    cookies = cookies.map((cookie) =>
+                        cookie.split("=")[0].trim()
+                    ); //- Get the name of the cookies
+
+                    if (cookies.includes(cookie_name)) {
+                        let res_code = expected_result === true ? "1" : "0";
+                        fetch("https://{{first-party}}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body:
+                                "Set-Cookie, Remote, " +
+                                "iframe" +
+                                ", Check visibility of cookie to JS code running outside the embedding: HttpOnly set to " +
+                                is_flagged +
+                                " and the cookie is Visible -> " +
+                                res_code,
+                        });
+                    } else {
+                        let res_code = expected_result === false ? "1" : "0";
+                        fetch("https://{{first-party}}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body:
+                                "Set-Cookie, Remote, " +
+                                "iframe" +
+                                ", Check visibility of cookie to JS code running outside the embedding: HttpOnly set to " +
+                                is_flagged +
+                                " and the cookie is Not Visible -> " +
+                                res_code,
+                        });
+                    }
+                });
+            });
+
+            try {
+                webviews.forEach((webview) => {
+                    webview.addEventListener("dom-ready", () => {
+                        if (webview.id === "webview1") {
+                            var cookie_name = "ccc";
+                            var expected_result = false;
+                            var is_flagged = "true";
+                        } else {
+                            var cookie_name = "ddd";
+                            var expected_result = true;
+                            var is_flagged = "false";
+                        }
+                        let cookies = document.cookie.split(";");
+                        cookies = cookies.map((cookie) =>
+                            cookie.split("=")[0].trim()
+                        ); //- Get the name of the cookies
+
+                        if (cookies.includes(cookie_name)) {
+                            let res_code = expected_result === true ? "1" : "0";
+                            fetch("https://{{first-party}}/report", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "text/plain",
+                                },
+                                body:
+                                    "Set-Cookie, Remote, " +
+                                    "webview" +
+                                    ", Check visibility of cookie to JS code running outside the embedding: HttpOnly set to " +
+                                    is_flagged +
+                                    " and the cookie is Visible -> " +
+                                    res_code,
+                            });
+                        } else {
+                            let res_code =
+                                expected_result === false ? "1" : "0";
+                            fetch("https://{{first-party}}/report", {
+                                method: "POST",
+                                headers: {
+                                    "Content-Type": "text/plain",
+                                },
+                                body:
+                                    "Set-Cookie, Remote, " +
+                                    "webview" +
+                                    ", Check visibility of cookie to JS code running outside the embedding: HttpOnly set to " +
+                                    is_flagged +
+                                    " and the cookie is Not Visible -> " +
+                                    res_code,
+                            });
+                        }
+                    });
+                });
+            } catch (e) {
+                console.log("Error: " + e);
+            }
+        </script>
+    </body>
+</html>

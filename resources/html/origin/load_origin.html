@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <webview
+            id="webview"
+            src="https://unscripted-pale-violet.online/origin_check.html"
+            style="display: inline-flex; width: 640px; height: 480px"
+        ></webview>
+
+        <script>
+            fetch("https://{{first-party}}/analyze_origin", {
+                method: "POST",
+                body: "main page",
+            });
+            let iframe = document.getElementById("ifr");
+            let webview = document.getElementById("webview");
+            if (iframe) {
+                iframe.onload = function () {
+                    let iframeWindow =
+                        iframe.contentDocument || iframe.contentWindow.document;
+                    let el = iframeWindow.getElementById("test");
+                    el.innerHTML = "Modified!";
+                };
+            }
+            if (webview) {
+                webview.addEventListener("dom-ready", () => {
+                    let webviewWindow =
+                        webview.contentDocument ||
+                        webview.contentWindow.document;
+                    let el = webvieWindow.getElementById("test");
+                    el.innerHTML = "Modified!";
+                });
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <p id="demo">Setting the value</p>
+        <script>
+            let p = document.getElementById("demo");
+            try {
+                localStorage.clear();
+                localStorage.setItem("key", "value");
+                p.innerHTML = "Value set";
+            } catch (e) {
+                p.innerHTML = "Error: " + e;
+            }
+        </script>
+    </body>
+</html>

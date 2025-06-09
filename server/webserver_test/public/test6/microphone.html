@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Microphone permission</h1>
+        <p id="message"></p>
+        <audio id="audio"></audio>
+        <script>
+            let audio = document.getElementById("audio");
+            let p = document.getElementById("message");
+            navigator.mediaDevices
+                .getUserMedia({ audio: true })
+                .then((stream) => {
+                    audio.srcObject = stream;
+                    audio.play();
+                    p.innerText = "Permission acquired";
+                })
+                .catch((error) => {
+                    console.log(error);
+                    p.innerText = "Permission denied";
+                });
+        </script>
+    </body>
+</html>

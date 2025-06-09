@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <script>
+            fetch("https://{{first-party}}/expose_headers?expose=true", {
+                method: "GET",
+            })
+                .then((response) => {
+                    let custom = response.headers.get("Custom-Header");
+                    if (custom == "Exposed") {
+                        fetch("https://{{first-party}}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body: "Expose-Headers, Remote, true, Exposed -> 1",
+                        });
+                    } else {
+                        fetch("https://{{first-party}}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body: "Expose-Headers, Remote, true, Not Exposed -> 0",
+                        });
+                    }
+                })
+                .then(() => {
+                    fetch(
+                        "https://{{first-party}}/expose_headers?expose=false",
+                        {
+                            method: "GET",
+                        }
+                    ).then((response) => {
+                        let custom = response.headers.get("Custom-Header");
+                        if (custom == "Exposed") {
+                            fetch("https://{{first-party}}/report", {
+                                method: "POST",
+                                headers: { "Content-Type": "text/plain" },
+                                body: "Expose-Headers, Remote, false, Exposed -> 0",
+                            });
+                        } else {
+                            fetch("https://{{first-party}}/report", {
+                                method: "POST",
+                                headers: { "Content-Type": "text/plain" },
+                                body: "Expose-Headers, Remote, false, Not Exposed -> 1",
+                            });
+                        }
+                    });
+                });
+        </script>
+    </body>
+</html>

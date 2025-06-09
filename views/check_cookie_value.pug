@@ -1,0 +1,35 @@
+html 
+    head 
+    body 
+        a(href="/send_cookie") Send cookie
+        script.
+            let embed = '#{embed}';
+            if (embed === "") 
+                embed = "No embedding";
+            let cookies = document.cookie.split(";")
+            let cookie_values = []
+            let not_allowed = [59, 44, 34, 92];
+            for (let i=0; i<cookies.length; i++) {
+                let cookie_name = cookies[i].split("=")[1].trim()
+                cookie_values.push(cookie_name)
+            }
+            console.log(cookie_values)
+            for (const code of not_allowed) {
+                if (cookie_values.includes(String.fromCharCode(code))) {
+                    fetch("https://#{firstparty}/report", {
+                        method: "POST",
+                        headers: { "Content-Type": "text/plain" },
+                        body: "Set-Cookie, Remote, " + embed + ", Check cookie value test: Cookie value contains character " +
+                            String.fromCharCode(code) +
+                            " with code " + code + " -> 0",
+                    })
+                } else {
+                    fetch("https://#{firstparty}/report", {
+                        method: "POST",
+                        headers: { "Content-Type": "text/plain" },
+                        body: "Set-Cookie, Remote, " + embed + ", Check cookie value test: Cookie value does not contain character " +
+                            String.fromCharCode(code) +
+                            " with code " + code + " -> 1",
+                    })
+                }
+            }

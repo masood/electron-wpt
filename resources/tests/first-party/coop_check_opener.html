@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Coop Popup</h1>
+        <p id="message"></p>
+        <script>
+            // Accessing the opener's global object:
+            var openerGlobal = window.opener;
+            let p = document.getElementById("message");
+
+            if (openerGlobal) {
+                fetch("https://{{first-party}}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "COOP same origin opener not null",
+                });
+            } else {
+                p.innerHTML = "No opener's global object";
+                fetch("https://{{first-party}}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "COOP same origin opener null",
+                });
+            }
+        </script>
+    </body>
+</html>

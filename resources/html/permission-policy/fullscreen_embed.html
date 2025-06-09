@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Fullscreen permission</h1>
+        <button id="button">Click me</button>
+        <p id="message"></p>
+
+        <h2>iframe</h2>
+        <iframe src="https://{{first-party}}/fullscreen"></iframe>
+
+        <h2>webview</h2>
+        <webview src="https://{{first-party}}/fullscreen"></webview>
+
+        <h2>iframe cross</h2>
+        <iframe
+            src="https://{{third-party}}/fullscreen"
+            allow="fullscreen"
+        ></iframe>
+
+        <h2>webview cross</h2>
+        <webview
+            src="https://{{third-party}}/fullscreen"
+            allow="fullscreen"
+        ></webview>
+
+        <script>
+            let p = document.getElementById("message");
+            let button = document.getElementById("button");
+            button.addEventListener("click", () => {
+                document.documentElement
+                    .requestFullscreen()
+                    .then(() => {
+                        p.innerText = "Permission acquired";
+                    })
+                    .catch((error) => {
+                        p.innerText = "Permission denied";
+                        console.log(error);
+                    });
+            });
+        </script>
+    </body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Geolocation permission</h1>
+        <p id="message"></p>
+
+        <h2>iframe</h2>
+        <iframe src="https://{{first-party}}/geolocation"></iframe>
+
+        <h2>webview</h2>
+        <webview src="https://{{first-party}}/geolocation"></webview>
+
+        <h2>iframe cross</h2>
+        <iframe
+            src="https://{{third-party}}/geolocation"
+            allow="geolocation"
+        ></iframe>
+
+        <h2>webview cross</h2>
+        <webview
+            src="https://{{third-party}}/geolocation"
+            allow="geolocation"
+        ></webview>
+
+        <script>
+            let p = document.getElementById("message");
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    p.innerText = "Permission acquired";
+                },
+                (error) => {
+                    p.innerText = "Permission denied";
+                }
+            );
+        </script>
+    </body>
+</html>

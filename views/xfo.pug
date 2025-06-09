@@ -1,0 +1,18 @@
+html
+    head 
+    body 
+        h1= "Test for X-Frame-Options header"
+        p= "Policy: " + policy
+        p= "Origin: " + origin
+
+        script.
+            let policy = "#{policy}";
+            let origin = "#{origin}";
+            let embed = "#{embed}";
+            if (embed === "") 
+                embed = "No embedding";
+            fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "X-Frame-Options: " + policy + ", " + "Origin: " + origin + ", " + embed + " loaded",
+                });

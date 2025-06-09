@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Performance Server Timing</h1>
+        <p id="test"></p>
+
+        <!-- <script>
+            let p = document.getElementById("test");
+            for (const entryType of ["navigation", "resource"]) {
+                for (const {
+                    name: url,
+                    serverTiming,
+                } of performance.getEntriesByType(entryType)) {
+                    if (serverTiming) {
+                        for (const {
+                            name,
+                            description,
+                            duration,
+                        } of serverTiming) {
+                            p.innerText += `${name} (${description}) duration: ${duration}`;
+
+                            // Logs "cache (Cache Read) duration: 23.2"
+                        }
+                    }
+                }
+            }
+        </script> -->
+        <script src="https://{{third-party}}/server_timing"></script>
+    </body>
+</html>

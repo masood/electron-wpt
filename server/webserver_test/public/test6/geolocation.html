@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Geolocation permission</h1>
+        <p id="message"></p>
+        <p id="position"></p>
+
+        <script>
+            let p = document.getElementById("message");
+            let pos = document.getElementById("position");
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    pos.innerText = `Latitude: ${position.coords.latitude}, Longitude: ${position.coords.longitude}`;
+                    p.innerText = "Permission acquired";
+                },
+                (error) => {
+                    console.log(error);
+                    p.innerText = "Permission denied";
+                }
+            );
+        </script>
+    </body>
+</html>

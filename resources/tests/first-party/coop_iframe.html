@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <iframe id="frame" src="https://{{first-party}}/"></iframe>
+
+        <script>
+            let iframe = document.getElementById("frame");
+            let url = ["coop_same", "coop_cross"];
+            let coop = [
+                "same-origin",
+                "unsafe-none",
+                "same-origin-allow-popups",
+            ];
+            let i = 0,
+                j = 0;
+            iframe.onload = function () {
+                function sleep(time) {
+                    return new Promise((resolve) => setTimeout(resolve, time));
+                }
+
+                sleep(1000).then(() => {
+                    if (i < url.length) {
+                        if (j < coop.length) {
+                            iframe.src =
+                                "https://{{first-party}}/" +
+                                url[i] +
+                                "?coop=" +
+                                coop[j];
+                            j++;
+                        } else {
+                            j = 0;
+                            i++;
+                            iframe.src =
+                                "https://{{first-party}}/" +
+                                url[i] +
+                                "?coop=" +
+                                coop[j];
+                            j++;
+                        }
+                    }
+                });
+            };
+        </script>
+    </body>
+</html>

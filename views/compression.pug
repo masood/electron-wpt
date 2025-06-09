@@ -1,0 +1,28 @@
+html
+    head
+    body
+        h1 Compression
+        p
+            | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam nec
+            | purus nec nunc tincidunt ultricies. Nullam nec purus nec nunc
+            | tincidunt ultricies. Nullam nec purus nec nunc tincidunt ultricies.
+            | Nullam nec purus nec nunc tincidunt ultricies. Nullam nec purus nec
+            | nunc tincidunt ultricies. Nullam nec purus nec nunc tincidunt
+            | ultricies. Nullam nec purus nec nunc tincidunt ultricies. Nullam nec
+            | purus nec nunc tincidunt ultricies. Nullam nec purus nec nunc
+            | tincidunt ultricies. Nullam nec purus nec nunc tincidunt ultricies.
+            | Nullam nec purus nec nunc tincidunt ultricies. Nullam nec purus nec
+            | nunc tincidunt ultricies. Nullam nec purus nec nunc tincidunt
+            | ultricies. Nullam nec purus nec nunc tincidunt ultricies. Nullam nec
+            | purus nec nunc tincidunt ultricies. Nullam nec
+        script.
+            let compression = '#{compression}';
+            let embed = '#{embed}';
+            if (embed === "") 
+                embed = "No embedding";
+            fetch("https://#{firstparty}/report", {
+                method: "POST",
+                headers: { "Content-Type": "text/plain" },
+                body: "Compression: " + compression + ", " + embed + " successfully parsed",
+            })
+        

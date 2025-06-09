@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Shared Worker Test</title>
+    </head>
+    <body>
+        <h1>Shared Worker Isolation Test</h1>
+        <button id="sendMessage">Send Message</button>
+        <div id="messages"></div>
+
+        <script>
+            // Initialize the Shared Worker
+            if (!!window.SharedWorker) {
+                console.log("Creating");
+                const worker = new SharedWorker("shared-worker.js");
+
+                // Listen for messages from the worker
+                worker.port.onmessage = function (event) {
+                    const messageDiv = document.getElementById("messages");
+                    const newMessage = document.createElement("p");
+                    newMessage.textContent = `${event.data}`;
+                    messageDiv.appendChild(newMessage);
+                };
+
+                // Send a message to the worker when the button is clicked
+                document
+                    .getElementById("sendMessage")
+                    .addEventListener("click", () => {
+                        let id = Math.floor(Math.random() * 1000);
+                        worker.port.postMessage(id);
+                    });
+
+                worker.port.start();
+            }
+        </script>
+    </body>
+</html>

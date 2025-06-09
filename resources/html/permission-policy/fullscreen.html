@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Fullscreen permission</h1>
+        <button id="button">Click me</button>
+        <p id="message"></p>
+
+        <script>
+            let p = document.getElementById("message");
+            let button = document.getElementById("button");
+            button.addEventListener("click", () => {
+                document.documentElement
+                    .requestFullscreen()
+                    .then(() => {
+                        p.innerText = "Permission acquired";
+                    })
+                    .catch((error) => {
+                        p.innerText = "Permission denied";
+                        console.log(error);
+                    });
+            });
+        </script>
+    </body>
+</html>

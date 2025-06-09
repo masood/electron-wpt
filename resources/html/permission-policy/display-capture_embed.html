@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Display capture permission</h1>
+        <p id="message"></p>
+
+        <h2>iframe</h2>
+        <iframe src="https://{{first-party}}/display-capture"></iframe>
+
+        <h2>webview</h2>
+        <webview src="https://{{first-party}}/display-capture"></webview>
+
+        <h2>iframe cross</h2>
+        <iframe
+            src="https://{{third-party}}/display-capture"
+            allow="display-capture"
+        ></iframe>
+
+        <h2>webview cross</h2>
+        <webview
+            src="https://{{third-party}}/display-capture"
+            allow="display-capture"
+        ></webview>
+
+        <script>
+            let p = document.getElementById("message");
+            navigator.mediaDevices
+                .getDisplayMedia({ video: true })
+                .then((stream) => {
+                    p.innerText = "Permission acquired";
+                })
+                .catch((error) => {
+                    p.innerText = "Permission denied";
+                });
+        </script>
+    </body>
+</html>

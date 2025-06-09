@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>XSS with cookies</h1>
+        <p>Malicious cookie received</p>
+        <p>
+            <a href="https://{{first-party}}/run_xss_cookie">Click</a> to send
+            the cookie to the server and receive the page with the code injected
+        </p>
+
+        <!-- <script>
+            let cookies = document.cookie;
+            cookies = cookies.split(";");
+            let injection = document.getElementById("inject_here");
+
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i];
+                let cookie_parts = cookie.split("=");
+                let key = cookie_parts[0];
+                let value = cookie_parts[1];
+                injection.innerHTML += key + "<br>";
+            }
+        </script>
+        <p id="inject_here"></p> -->
+    </body>
+</html>

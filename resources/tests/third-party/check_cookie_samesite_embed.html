@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <!-- ---------- IFRAME STRICT PAGE ------------ -->
+        <iframe
+            src="https://{{first-party}}/check_cookie_samesite?policy=strict&cross=false&name=aifa&changeprotocol=true&embed=iframe&localIframe=true"
+        ></iframe>
+        <iframe
+            src="https://{{first-party}}/check_cookie_samesite?policy=strict&cross=false&name=vifb&changeprotocol=false&embed=iframe&localIframe=true"
+        ></iframe>
+        <iframe
+            src="http://{{first-party}}/check_cookie_samesite?policy=strict&cross=false&name=cifc&changeprotocol=false&embed=iframe&localIframe=true"
+        ></iframe>
+        <iframe
+            src="http://{{first-party}}/check_cookie_samesite?policy=strict&cross=false&name=difd&changeprotocol=true&embed=iframe&localIframe=true"
+        ></iframe>
+
+        <iframe
+            src="https://{{first-party}}/check_cookie_samesite?policy=strict&cross=true&name=aifa&changeprotocol=true&embed=iframe"
+        ></iframe>
+        <iframe
+            src="https://{{first-party}}/check_cookie_samesite?policy=strict&cross=true&name=vifb&changeprotocol=false&embed=iframe"
+        ></iframe>
+        <iframe
+            src="http://{{first-party}}/check_cookie_samesite?policy=strict&cross=true&name=cifc&changeprotocol=false&embed=iframe"
+        ></iframe>
+        <iframe
+            src="http://{{first-party}}/check_cookie_samesite?policy=strict&cross=true&name=difd&changeprotocol=true&embed=iframe"
+        ></iframe>
+
+        <!-- ---------- WEBVIEW STRICT PAGE ------------ -->
+        <webview
+            src="https://{{first-party}}/check_cookie_samesite?policy=strict&cross=false&name=awva&changeprotocol=true&embed=webview"
+        ></webview>
+        <webview
+            src="https://{{first-party}}/check_cookie_samesite?policy=strict&cross=false&name=vwvb&changeprotocol=false&embed=webview&expected_result=true"
+        ></webview>
+        <webview
+            src="http://{{first-party}}/check_cookie_samesite?policy=strict&cross=false&name=cwvc&changeprotocol=false&embed=webview&expected_result=true"
+        ></webview>
+        <webview
+            src="http://{{first-party}}/check_cookie_samesite?policy=strict&cross=false&name=dwvd&changeprotocol=true&embed=webview"
+        ></webview>
+
+        <webview
+            src="https://{{first-party}}/check_cookie_samesite?policy=strict&cross=true&name=awva&changeprotocol=true&embed=webview"
+        ></webview>
+        <webview
+            src="https://{{first-party}}/check_cookie_samesite?policy=strict&cross=true&name=vwvb&changeprotocol=false&embed=webview"
+        ></webview>
+        <webview
+            src="http://{{first-party}}/check_cookie_samesite?policy=strict&cross=true&name=cwvc&changeprotocol=false&embed=webview"
+        ></webview>
+        <webview
+            src="http://{{first-party}}/check_cookie_samesite?policy=strict&cross=true&name=dwvd&changeprotocol=true&embed=webview"
+        ></webview>
+
+        <!-- ---------- IFRAME STRICT NOPAGE ----------- -->
+        <iframe
+            id="is_strict"
+            src="https://{{first-party}}/check_cookie_samesite_nopage?policy=strict&name=is_strict"
+        ></iframe>
+
+        <iframe
+            id="ip_strict"
+            src="http://{{first-party}}/check_cookie_samesite_nopage?policy=strict&name=ip_strict"
+        ></iframe>
+
+        <!-- ---------- IFRAME LAX NOPAGE ----------- -->
+        <iframe
+            id="is_lax"
+            src="https://{{first-party}}/check_cookie_samesite_nopage?policy=strict&name=is_lax"
+        ></iframe>
+
+        <iframe
+            id="ip_lax"
+            src="http://{{first-party}}/check_cookie_samesite_nopage?policy=strict&name=ip_lax"
+        ></iframe>
+
+        <!-- ----------- WEBVIEW STRICT NOPAGE ----------- -->
+
+        <webview
+            id="ws_strict"
+            src="https://{{first-party}}/check_cookie_samesite_nopage?policy=strict&name=ws_strict"
+        ></webview>
+
+        <webview
+            id="wp_strict"
+            src="http://{{first-party}}/check_cookie_samesite_nopage?policy=strict&name=wp_strict"
+        ></webview>
+
+        <!-- ----------- WEBVIEW LAX NOPAGE ----------- -->
+
+        <webview
+            id="ws_lax"
+            src="https://{{first-party}}/check_cookie_samesite_nopage?policy=strict&name=ws_lax"
+        ></webview>
+
+        <webview
+            id="wp_lax"
+            src="http://{{first-party}}/check_cookie_samesite_nopage?policy=strict&name=wp_lax"
+        ></webview>
+
+        <script>
+            // Add a 4 seconds timout
+            setTimeout(() => {
+                window.location.href =
+                    "https://{{first-party}}/check_cookie_samesite_set?origin=cross_origin&should_be_sent=ws_strict;wp_strict;wp_lax;ws_lax";
+            }, 4000);
+        </script>
+    </body>
+</html>

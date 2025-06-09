@@ -1,0 +1,47 @@
+html
+    head
+    body
+        script.
+            let embed = "#{embed}"
+            fetch("https://#{firstparty}/expose_headers?expose=true", {
+                method: "GET",
+            })
+                .then((response) => {
+                    let custom = response.headers.get("Custom-Header");
+                    if (custom == "Exposed") {
+                        fetch("https://#{firstparty}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body: `Expose-Headers, Remote, ${embed}, true, Exposed -> 1`,
+                        });
+                    } else {
+                        fetch("https://#{firstparty}/report", {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain" },
+                            body: `Expose-Headers, Remote, ${embed}, true, Not Exposed -> 0`,
+                        });
+                    }
+                })
+                .then(() => {
+                    fetch(
+                        "https://#{firstparty}/expose_headers?expose=false",
+                        {
+                            method: "GET",
+                        }
+                    ).then((response) => {
+                        let custom = response.headers.get("Custom-Header");
+                        if (custom == "Exposed") {
+                            fetch("https://#{firstparty}/report", {
+                                method: "POST",
+                                headers: { "Content-Type": "text/plain" },
+                                body: `Expose-Headers, Remote, ${embed}, false, Exposed -> 0`,
+                            });
+                        } else {
+                            fetch("https://#{firstparty}/report", {
+                                method: "POST",
+                                headers: { "Content-Type": "text/plain" },
+                                body: `Expose-Headers, Remote, ${embed}, false, Not Exposed -> 1`,
+                            });
+                        }
+                    });
+                });

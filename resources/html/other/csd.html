@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <script src="https://{{first-party}}/sample_script" defer></script>
+    </head>
+    <body>
+        <h1>Cookie sent and localStorage/sessionStorage filled</h1>
+        <p id="fetched_script"></p>
+        <a href="https://{{first-party}}/verify_csd"
+            >Click here to clear cookies and storage</a
+        ><br />
+        <a href="https://{{first-party}}/csd"
+            >Click here to come back here and verify the cache</a
+        >
+
+        <script>
+            localStorage.setItem("local", "true");
+            sessionStorage.setItem("session", "true");
+        </script>
+
+        <h1>iframe that clears cookies and storage</h1>
+        <iframe src="https://{{first-party}}/verify_csd"></iframe>
+    </body>
+</html>

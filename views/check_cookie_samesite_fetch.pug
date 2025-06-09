@@ -1,0 +1,41 @@
+html
+    head
+    body
+        script.
+            let embed = '#{embed}';
+            if (embed === "") 
+                embed = "No embedding";
+            let cookie_name = '#{name}';
+            let policy = '#{policy}';
+            let new_protocol = '#{protocol}';
+            let old_protocol = location.protocol.slice(0, -1);
+
+            let expected_result = '#{expected_result}' === 'true' ? true : false;
+
+
+            fetch(new_protocol + "://#{firstparty}/check_cookie_samesite_result?name=" + cookie_name, { credentials: "include"})
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.isCookiePresent) {
+                    let res_code = expected_result === true ? "1" : "0";
+                    fetch("https://#{firstparty}/report", {
+                        method: "POST",
+                        headers: { "Content-Type": "text/plain" },
+                        body: "Set-Cookie, Remote, " + embed + ", Check if SameSite cookie is sent: SameSite set to " + policy + ", final endpoint visited with a same-origin fetch from " + old_protocol + " to " + new_protocol + " and the cookie was sent -> " + res_code,
+                    });
+                } else {
+                    let res_code = expected_result === false ? "1" : "0";
+                    fetch("https://#{firstparty}/report", {
+                        method: "POST",
+                        headers: { "Content-Type": "text/plain" },
+                        body: "Set-Cookie, Remote, " + embed + ", Check if SameSite cookie is sent: SameSite set to " + policy + ", final endpoint visited with a same-origin fetch from " + old_protocol + " to " + new_protocol + " and the cookie was not sent -> " + res_code,
+                    });
+                }
+            })
+            .catch((error) => {
+                fetch("https://#{firstparty}/report", {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain" },
+                    body: "Set-Cookie, Remote, " + embed + ", Check if SameSite cookie is sent: SameSite set to " + policy + ", final endpoint visited with a same-origin fetch from " + old_protocol + " to " + new_protocol + ". There was an error when fetching the final page. Is allowRunningInsecureContent allowed? -> ?",
+                });
+            })

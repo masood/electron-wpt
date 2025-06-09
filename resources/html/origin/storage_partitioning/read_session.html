@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <p id="demo">Reading the value</p>
+        <a href="https://unscripted-pale-violet.online/contain_set_session"
+            >Go back</a
+        >
+        <script>
+            let p = document.getElementById("demo");
+            try {
+                let value = sessionStorage.getItem("key");
+                if (value === null) {
+                    p.innerHTML = "Value not set";
+                } else {
+                    p.innerHTML = "Value: " + value;
+                }
+            } catch (e) {
+                p.innerHTML = "Error: " + e;
+            }
+        </script>
+    </body>
+</html>
